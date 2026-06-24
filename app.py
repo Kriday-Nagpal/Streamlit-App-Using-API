@@ -8,7 +8,7 @@ country = st.text_input("Enter Country", "India")
 
 if st.button("Search"):
 
-    url = f"https://restcountries.com/v3.1/name/{country}?fullText=false"
+    url = f"https://restcountries.com/v3.1/translation/{country}"
 
     response = requests.get(url)
 

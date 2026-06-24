@@ -8,19 +8,19 @@ country = st.text_input("Enter Country", "India")
 
 if st.button("Search"):
 
-    url = f"https://restcountries.com/v3.1/name/{country}"
+    url = f"https://restcountries.com/v3.1/name/{country}?fullText=false"
 
     response = requests.get(url)
 
-    try:
-        data = response.json()
+    if response.status_code == 200:
 
-        st.write(data) 
+        data = response.json()
 
         country_data = data[0]
 
         info = [{
             "Country": country_data["name"]["common"],
+            "Capital": country_data.get("capital", ["N/A"])[0],
             "Region": country_data["region"],
             "Population": country_data["population"]
         }]
@@ -29,5 +29,5 @@ if st.button("Search"):
 
         st.dataframe(df)
 
-    except Exception as e:
-        st.error(f"Error: {e}")
+    else:
+        st.error("Country not found")

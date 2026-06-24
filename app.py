@@ -1,34 +1,17 @@
 import requests
-import pandas as pd
 import streamlit as st
 
-st.title("🌍 Country Info App")
+st.set_page_config(page_title="Fact Generator")
 
-country = st.text_input("Enter Country", "India")
+st.title("🧠 Random Fact Generator")
 
-if st.button("Search"):
+if st.button("Generate Fact"):
 
-    url = f"https://restcountries.com/v3.1/all{country}"
+    response = requests.get(
+        "https://uselessfacts.jsph.pl/api/v2/facts/random"
+    )
 
-    response = requests.get(url)
-    st.write(response.json())
+    fact = response.json()
 
-    if response.status_code == 200:
-
-        data = response.json()
-
-        country_data = data[0]
-
-        info = [{
-            "Country": country_data["name"]["common"],
-            "Capital": country_data.get("capital", ["N/A"])[0],
-            "Region": country_data["region"],
-            "Population": country_data["population"]
-        }]
-
-        df = pd.DataFrame(info)
-
-        st.dataframe(df)
-
-    else:
-        st.error("Country not found")
+    st.subheader("Did You Know?")
+    st.write(fact["text"])

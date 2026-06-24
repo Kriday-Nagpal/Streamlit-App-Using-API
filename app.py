@@ -12,26 +12,22 @@ if st.button("Search"):
 
     response = requests.get(url)
 
-    if response.status_code == 200:
-
+    try:
         data = response.json()
 
-        if len(data) > 0:
+        st.write(data) 
 
-            country_data = data[0]
+        country_data = data[0]
 
-            info = [{
-                "Country": country_data["name"]["common"],
-                "Region": country_data["region"],
-                "Population": country_data["population"]
-            }]
+        info = [{
+            "Country": country_data["name"]["common"],
+            "Region": country_data["region"],
+            "Population": country_data["population"]
+        }]
 
-            df = pd.DataFrame(info)
+        df = pd.DataFrame(info)
 
-            st.dataframe(df)
+        st.dataframe(df)
 
-        else:
-            st.error("No country found")
-
-    else:
-        st.error("Country not found")
+    except Exception as e:
+        st.error(f"Error: {e}")

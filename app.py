@@ -11,6 +11,7 @@ if st.button("Search"):
     url = f"https://restcountries.com/v3.1/translation/{country}"
 
     response = requests.get(url)
+    st.write(response.json())
 
     if response.status_code == 200:
 
